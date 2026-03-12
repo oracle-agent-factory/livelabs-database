@@ -10,9 +10,11 @@ AI agents are different. They act. Ask an agent about a loan status and it queri
 
 This workshop teaches you to build agents that execute instead of explain.
 
+![Introduction to Seer Equity](./images/intro.png " ")
+
 ## Meet Seer Equity
 
-Throughout this workshop, you'll build AI agents for **Seer Equity**, a growing financial services company specializing in personal, auto, mortgage, and business loans.
+Throughout this workshop, you will build AI agents for **Seer Equity**, a growing financial services company specializing in personal, auto, mortgage, and business loans.
 
 Seer Equity has been growing fast. Maybe too fast. Their loan officers are overwhelmed, and cracks are starting to show.
 
@@ -29,6 +31,12 @@ When clients called asking about their loan applications, they wanted answers, n
 After deploying the first agent, Seer Equity's technical team had a question: can't we just ask the AI to generate SQL directly? When does the full agent framework actually help?
 
 **In Lab 2, we explored this.** We compared three approaches: zero-shot (no data access), SELECT AI (read-only), and agents (read and write). Watch an agent check a loan's status and update it based on conditions. Seer Equity now knows exactly when to deploy each approach.
+
+**"Before every client call, I spend 10-15 minutes just gathering the information I need."**
+
+Loan officers were pulling together client information from multiple places before every call. Contact preferences, loan history, rate eligibility, credit tier. By the time they had everything, they'd forgotten why the client called. One agent with one tool wasn't enough. They needed an agent that could plan and execute a multi-step lookup on its own.
+
+**In Lab 3, we fixed this.** We built an agent with three tools and let it figure out which ones to call, in what order, and how to combine the results. Jennifer's 10-15 minute prep is now a 10-second agent call. We also saw how instructions control the planning process, so the agent's behavior stays predictable and easy to debug.
 
 ### The Problems Still Keeping Leadership Up at Night
 
@@ -56,7 +64,7 @@ Compliance requires that the person who submits a loan application can't be the 
 
 We'll solve all of these problems in future labs. Here's what Seer Equity will build:
 
-| Business Problem | Agent Solution | You'll Build It In |
+| Business Problem | Agent Solution | You Will Build It In |
 |------------------|----------------|---------------------|
 | Forgetting client preferences | Persistent memory that survives sessions | Labs 5, 7, 9 |
 | Inconsistent decisions | Past decision lookup for guidance | Labs 8, 9 |
@@ -77,30 +85,33 @@ This is an ongoing series following Seer Equity as they transform their AI from 
 
 * **Lab 2: Agents vs Zero-Shot.** Compare three approaches: zero-shot (no data access), SELECT AI (read-only), and agents (read and write). Watch an agent check a loan's status and update it based on conditions.
 
+* **Lab 3: How Agents Plan the Work.** Give an agent three tools and watch it plan a multi-step client lookup. See how it picks which tools to call, in what order, and how instructions keep the behavior predictable.
+
 ### Objectives
 
-By the end of this workshop, you'll be able to:
+By the end of this workshop, you will be able to:
 
 * Explain the difference between a chatbot and an agent
-* Create database tables with comments that help Select AI understand your schema
-* Build an agent with a SQL tool using Oracle Select AI Agent framework
-* Query the agent using natural language and receive data-driven answers
-* View execution history to see what the agent did
+* Build an agent with SQL tools and query it using natural language
+* View execution history to see what the agent did and why
 * Choose the right approach (zero-shot, SELECT AI, or agent) for different use cases
-* Build agents that can update data based on conditional logic
+* Build agents that can read and write data based on conditional logic
+* Build multi-tool agents and observe how they plan multi-step operations
 
 ### Prerequisites
 
-For this workshop, we provide the environment. You'll need:
+For this workshop, we provide the environment. You will need:
 
-* Basic knowledge of SQL and PL/SQL, or the ability to follow along with the prompts
+* Basic knowledge of SQL, or the ability to follow along with the prompts
 
 ## Learn More
 
+* [Get an Autonomous Database for FREE!](https://www.oracle.com/autonomous-database/free-trial/)
+* [Mark Hornick's Select AI Agent Blog](https://blogs.oracle.com/machinelearning/build-your-agentic-solution-using-oracle-adb-select-ai-agent)
 * [Oracle Database Documentation](https://docs.oracle.com/en/database/oracle/oracle-database/)
 * [`DBMS_CLOUD_AI_AGENT` Package](https://docs.oracle.com/en/cloud/paas/autonomous-database/serverless/adbsb/dbms-cloud-ai-agent-package.html)
 
 ## Acknowledgements
 
-* **Author** - David Start
-* **Last Updated By/Date** - David Start, January 2026
+* **Author** - David Start, Director, Database Product Management
+* **Last Updated By/Date** - Kay Malcolm, February 2026
