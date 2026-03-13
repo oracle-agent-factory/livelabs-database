@@ -1,0 +1,46 @@
+{
+    "workshoptitle": "Build & Deploy Custom MCP Servers on OCI",
+    "help": "livelabs-help-db_us@oracle.com",
+    "tutorials": [
+        {
+            "title": "Introduction",
+            "description": "Learn what MCP servers are and what you will build in this workshop",
+            "filename": "../../introduction/introduction.md"
+        },
+        {
+            "title": "Lab 1: Provision an OCI Compute Instance",
+            "description": "Create a VM and configure networking for MCP server hosting",
+            "filename": "../../provision-compute/provision-compute.md"
+        },
+        {
+            "title": "Lab 2: Set Up the Development Environment",
+            "description": "Install Python, create a virtual environment, and install FastMCP",
+            "filename": "../../setup-environment/setup-environment.md"
+        },
+        {
+            "title": "Lab 3: Build Your First MCP Server",
+            "description": "Write a Hello World MCP server with two tools using FastMCP",
+            "filename": "../../build-hello-mcp/build-hello-mcp.md"
+        },
+        {
+            "title": "Lab 4: Build a Database MCP Server",
+            "description": "Create a production-grade MCP server with Oracle DB tools",
+            "filename": "../../build-db-mcp/build-db-mcp.md"
+        },
+        {
+            "title": "Lab 5: Deploy as a Persistent Service",
+            "description": "Run your MCP server as a systemd service with auto-restart",
+            "filename": "../../deploy-service/deploy-service.md"
+        },
+        {
+            "title": "Lab 6: Connect to Agent Factory & MCP Clients",
+            "description": "Register your MCP server with Agent Factory, Cline, or Claude Desktop",
+            "filename": "../../connect-agent-factory/connect-agent-factory.md"
+        },
+        {
+            "title": "Need Help?",
+            "description": "Solutions to Common Problems and Directions for Receiving Live Help",
+            "filename": "https://raw.githubusercontent.com/oracle-livelabs/common/main/labs/need-help/need-help-freetier.md"
+        }
+    ]
+}
