@@ -2,7 +2,7 @@
 
 ## Introduction
 
-In this lab, you will build a production-grade MCP server that connects to an Oracle Database and exposes SQL tools as MCP-callable functions. This is the pattern used in real-world MCP deployments — the server acts as a bridge between AI agents and your database, allowing natural language queries to be translated into actual SQL operations.
+In this lab, you will build a production-grade MCP server that connects to an Oracle Database and exposes SQL tools as MCP-callable functions. This is the pattern used in real-world MCP deployments — the server acts as a bridge between Oracle Agent Factory and your database, allowing natural language queries to be translated into actual SQL operations.
 
 Estimated Time: 20 minutes
 
@@ -12,7 +12,7 @@ Your Database MCP Server will:
 - Connect to Oracle Database using the `oracledb` Python driver
 - Expose tools for running SQL queries, listing users, and checking connectivity
 - Use environment variables for secure credential management (no hardcoded passwords)
-- Return results as structured JSON that AI agents can parse and present
+- Return results as structured JSON that Oracle Agent Factory can parse and present
 
 ### Objectives
 
@@ -21,19 +21,27 @@ In this lab, you will:
 * Install the `oracledb` Python driver
 * Configure database connection using environment variables
 * Write a Database MCP server with 4 tools
-* Test SQL tool invocations
+* Understand every section of the code
+* Test the server through Oracle Agent Factory Playground
 
 ### Prerequisites
 
 This lab assumes you have:
 
-* SSH access to your Compute Instance
-* Python virtual environment with `fastmcp` installed (from Lab 2)
+* Completed Lab 2 (Hello World MCP server working)
 * Access to an Oracle Database (Autonomous DB, 23ai Free, or any Oracle DB)
+* Database connection details (username, password, TNS alias or connection string)
+
+For help with database connections, see:
+- [Download ADB Wallet](https://docs.oracle.com/en/cloud/paas/autonomous-database/serverless/adbsb/connect-download-wallet.html)
+- [Connect python-oracledb to ADB](https://python-oracledb.readthedocs.io/en/latest/user_guide/connection_handling.html#connecting-to-oracle-cloud-autonomous-databases)
+- [Oracle 23ai Free Quick Start](https://www.oracle.com/database/free/get-started/)
+
+> **Don't want to type the code?** Download the ready-to-run [db_mcp.py](files/db_mcp.py?download=1) file, or download the [cumulative setup script](files/lab3_setup.sh?download=1) that does everything for you.
 
 ## Task 1: Install Database Dependencies
 
-1. On your VM, activate your virtual environment and install the Oracle DB driver:
+1. On your VM, activate your virtual environment:
 
     ```
     <copy>
@@ -58,7 +66,15 @@ This lab assumes you have:
     </copy>
     ```
 
-    > **Note:** For Autonomous Database users, download your wallet, place it in `/opt/adb_wallet`, and set `DB_DSN_ALIAS` to the TNS alias from `tnsnames.ora`. For 23ai Free on the same VM, use `DB_EZCONNECT=localhost:1521/freepdb1` instead.
+    > **For Autonomous Database:** Download your wallet, place it in `/opt/adb_wallet`, and set `DB_DSN_ALIAS` to the TNS alias from `tnsnames.ora` (e.g., `mydb_high`).
+
+    > **For 23ai Free on the same VM:** Use `DB_EZCONNECT=localhost:1521/freepdb1` instead of `DB_DSN_ALIAS`.
+
+    | Environment Variable | When To Use | Example |
+    | --- | --- | --- |
+    | `DB_DSN_ALIAS` + `TNS_ADMIN` | Autonomous Database (with wallet) | `mydb_high` |
+    | `DB_EZCONNECT` | Any Oracle DB without wallet | `localhost:1521/freepdb1` |
+    | `DB_USER` / `DB_PASS` | Always required | `ADMIN` / `your-password` |
 
 ## Task 3: Write the Database MCP Server
 
@@ -243,13 +259,11 @@ This server is more complex than the Hello World server. Let's break down every 
 
 ```python
 import os, json, logging, datetime, decimal
-from typing import Optional, Dict
 from dotenv import load_dotenv
 import oracledb
 from fastmcp import FastMCP
 
 load_dotenv()
-logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 ```
 
 | Import | Purpose |
@@ -272,14 +286,13 @@ class DatabaseOps:
     def connect(self) -> bool:
         if self.connection:
             try:
-                self.connection.ping()      # Check if existing connection is alive
+                self.connection.ping()
                 return True
             except Exception:
-                self.connection = None       # Connection died, reset it
-        # ... create new connection ...
+                self.connection = None
 ```
 
-This class manages the database connection with a **reconnection pattern**:
+This class manages the database connection with a **lazy reconnection pattern**:
 
 | Step | What Happens | Why |
 | --- | --- | --- |
@@ -287,27 +300,9 @@ This class manages the database connection with a **reconnection pattern**:
 | Reset on failure | Sets `self.connection = None` if ping fails | Allows fresh reconnection on next call |
 | Lazy connect | Only connects when a tool actually needs the DB | Server starts up fast, even if DB is temporarily down |
 
-> **Key Pattern:** This "lazy reconnect" pattern is used in all production MCP servers. It means your server doesn't crash if the database restarts — it silently reconnects on the next tool call.
+> **Key Pattern:** This "lazy reconnect" pattern is used in all production MCP servers. Your server doesn't crash if the database restarts — it silently reconnects.
 
-### Section 3: Connection Configuration via Environment Variables
-
-```python
-user = os.getenv("DB_USER", "ADMIN")
-pw = os.getenv("DB_PASS")
-cfg = os.getenv("TNS_ADMIN", "/opt/adb_wallet")
-dsn_alias = os.getenv("DB_DSN_ALIAS")
-ez_dsn = os.getenv("DB_EZCONNECT")
-```
-
-The server supports **two connection modes** via environment variables:
-
-| Env Variable | When To Use | Example Value |
-| --- | --- | --- |
-| `DB_DSN_ALIAS` + `TNS_ADMIN` | Autonomous Database (with wallet) | `mydb_high` |
-| `DB_EZCONNECT` | Any Oracle DB without wallet | `localhost:1521/freepdb1` |
-| `DB_USER` / `DB_PASS` | Always needed | `ADMIN` / `your-password` |
-
-### Section 4: JSON Helper Function
+### Section 3: JSON Helper Function
 
 ```python
 def _json_safe(v):
@@ -318,89 +313,37 @@ def _json_safe(v):
     return v
 ```
 
-Oracle DB returns Python types like `datetime` and `Decimal` that aren't JSON-serializable. This helper converts them so `json.dumps()` doesn't crash.
+Oracle DB returns Python types like `datetime` and `Decimal` that aren't JSON-serializable. This converts them so `json.dumps()` works cleanly.
 
-| Oracle Type | Converted To | Example |
+### Section 4: The MCP Tools
+
+| Tool | What It Does | When Agent Uses It |
 | --- | --- | --- |
-| `datetime.datetime` | ISO string | `"2025-02-27T10:30:00"` |
-| `decimal.Decimal` | `float` | `99.99` |
-| Everything else | Unchanged | `"ADMIN"`, `42` |
+| `oracle_connect` | Pings the database | "Is the database working?" |
+| `db_run_sql` | Runs any SQL query | "SELECT sysdate FROM dual" |
+| `db_list_users` | Lists DB users with optional filter | "Show me all admin users" |
+| `db_table_info` | Gets column metadata | "What columns does EMPLOYEES have?" |
 
-### Section 5: The MCP Server and Tools
-
-```python
-mcp = FastMCP("OracleDatabaseAgent")
-```
-
-Same pattern as Hello World — create a named server. The name `"OracleDatabaseAgent"` appears in MCP clients.
-
-#### Tool 1: `oracle_connect` — Health Check
-
-```python
-@mcp.tool()
-def oracle_connect() -> str:
-    """Check Oracle DB connectivity and return status."""
-```
-
-A simple tool that pings the database and reports if it's alive. The AI agent calls this when the user asks "Is the database working?"
-
-#### Tool 2: `db_run_sql` — The Powerhouse
-
-```python
-@mcp.tool()
-def db_run_sql(query: str, limit: int = 100) -> str:
-    """Execute a SQL query against the Oracle Database."""
-```
-
-This is **the most powerful tool** — it runs arbitrary SQL. Key design choices:
+Key design choices in `db_run_sql`:
 
 | Design Choice | Why |
 | --- | --- |
-| `limit: int = 100` | Default parameter with a sane limit. Prevents accidentally dumping millions of rows |
-| `cur.description` check | Detects if the query returns data (SELECT) vs modifies data (INSERT/UPDATE) |
+| `limit: int = 100` | Default limit prevents dumping millions of rows |
+| `cur.description` check | Detects SELECT vs INSERT/UPDATE |
 | Auto-commit for DML | INSERT/UPDATE/DELETE are committed automatically |
-| Returns JSON | `{"columns": [...], "rows": [...]}` — structured format the AI can parse |
-
-#### Tool 3: `db_list_users` — Parameterized Query
-
-```python
-@mcp.tool()
-def db_list_users(pattern: Optional[str] = None) -> str:
-    """List database users. Optionally filter by LIKE pattern."""
-```
-
-Demonstrates an **optional parameter** — `pattern` defaults to `None`. If provided, it filters with a `LIKE` clause. Uses **bind variables** (`:p`) for SQL injection safety.
-
-#### Tool 4: `db_table_info` — Metadata Query
-
-```python
-@mcp.tool()
-def db_table_info(table_name: str) -> str:
-    """Get column information for a specific table."""
-```
-
-Queries Oracle's data dictionary (`all_tab_columns`) to show table structure. Useful when the AI agent needs to understand a table before writing queries.
-
-### Section 6: Start the Server
-
-```python
-if __name__ == "__main__":
-    mcp.run(transport="streamable-http", host="0.0.0.0", port=8009)
-```
-
-Same pattern as before — listen on all interfaces, port 8009. In the next lab, you'll learn how to run this as a background service that starts on boot.
+| Returns JSON | `{"columns": [...], "rows": [...]}` — structured for AI |
 
 ### Summary: What Makes a Good MCP Tool?
 
 | Guideline | Example |
 | --- | --- |
-| **Clear docstring** | "Execute a SQL query against the Oracle Database" — tells the AI exactly when to use it |
-| **Type-annotated parameters** | `query: str, limit: int = 100` — the AI knows what to send |
-| **Sensible defaults** | `limit=100` prevents disasters, `pattern=None` makes filtering optional |
-| **Return strings** | All tools return `str` — JSON for structured data, plain text for status |
-| **Handle errors gracefully** | `try/except` blocks return error messages instead of crashing |
+| **Clear docstring** | "Execute a SQL query against the Oracle Database" |
+| **Type-annotated parameters** | `query: str, limit: int = 100` |
+| **Sensible defaults** | `limit=100` prevents disasters |
+| **Return strings** | JSON for data, plain text for status |
+| **Handle errors gracefully** | `try/except` returns messages, not crashes |
 
-## Task 5: Run and Test the Database Server
+## Task 5: Run and Test in Agent Factory
 
 1. Start the Database MCP server:
 
@@ -418,23 +361,43 @@ Same pattern as before — listen on all interfaces, port 8009. In the next lab,
 
     ![DB MCP Server Running](images/db-mcp-server-start.png =50%x*)
 
-2. In a **second SSH session**, test connectivity:
+2. In Agent Factory, create a **new flow** (or update your existing one) with the DB MCP server URL:
 
     ```
     <copy>
-    curl -s http://localhost:8009/mcp
+    http://<your-vm-public-ip>:8009/mcp
     </copy>
     ```
 
-3. You can also test the tools with a proper MCP client or by using your AI agent. For a quick smoke test, simply verify the endpoint responds:
+3. Open the **Playground** and test with these natural language queries:
 
     ```
     <copy>
-    curl -s http://<your-public-ip>:8009/mcp | head -20
+    Check if the database is connected
     </copy>
     ```
 
-4. Stop the server with **Ctrl+C** when done testing.
+    ```
+    <copy>
+    List all database users
+    </copy>
+    ```
+
+    ```
+    <copy>
+    Show me the columns in the EMPLOYEES table
+    </copy>
+    ```
+
+    ```
+    <copy>
+    Run this query: SELECT table_name FROM user_tables ORDER BY table_name
+    </copy>
+    ```
+
+    ![Agent Factory DB Test](images/agent-factory-chat-with-mcp.png =50%x*)
+
+4. Stop the server with **Ctrl+C** when done testing. In the next lab, you'll make it run permanently.
 
 You may now **proceed to the next lab**.
 
@@ -442,8 +405,9 @@ You may now **proceed to the next lab**.
 
 * [python-oracledb Documentation](https://python-oracledb.readthedocs.io)
 * [Oracle Autonomous Database Quick Start](https://docs.oracle.com/en/cloud/paas/autonomous-database/)
+* [Download ADB Wallet](https://docs.oracle.com/en/cloud/paas/autonomous-database/serverless/adbsb/connect-download-wallet.html)
 
 ## Acknowledgements
 
 * **Author** - Lavkesh Singh, Oracle
-* **Last Updated By/Date** - Lavkesh Singh, February 2025
+* **Last Updated By/Date** - Lavkesh Singh, March 2026

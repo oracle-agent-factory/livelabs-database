@@ -19,8 +19,10 @@ In this lab, you will:
 
 This lab assumes you have:
 
-* A working Database MCP server (from Lab 4)
+* A working Database MCP server (from Lab 3)
 * SSH access to your Compute Instance with `sudo` privileges
+
+> **Don't want to type everything?** Download the [cumulative deploy script](files/lab4_deploy.sh?download=1) that does everything in this lab automatically.
 
 ## Task 1: Create a Startup Script
 
@@ -140,7 +142,7 @@ This lab assumes you have:
 
 ## Task 5: (Optional) Run Multiple MCP Servers
 
-You can run additional MCP servers by creating more service files. For example, to also run the Hello World server from Lab 3 on port 8004:
+You can run additional MCP servers by creating more service files. For example, to also run the Hello World server from Lab 2 on port 8004:
 
 1. Create a second service file:
 
@@ -170,7 +172,7 @@ You can run additional MCP servers by creating more service files. For example, 
 
     Now you have two MCP servers running persistently on ports 8004 and 8009.
 
-You may now **proceed to the next lab**.
+Congratulations! 🎉 You have successfully built, deployed, and connected custom MCP servers to Oracle Agent Factory. Your AI agent can now query your Oracle Database using natural language — and the servers will keep running even after you log out.
 
 ## Learn More
 
@@ -180,4 +182,4 @@ You may now **proceed to the next lab**.
 ## Acknowledgements
 
 * **Author** - Lavkesh Singh, Oracle
-* **Last Updated By/Date** - Lavkesh Singh, February 2025
+* **Last Updated By/Date** - Lavkesh Singh, March 2026

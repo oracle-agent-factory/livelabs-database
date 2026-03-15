@@ -1,32 +1,29 @@
-# Build Your First MCP Server
+# Build & Test Your First MCP Server
 
 ## Introduction
 
-In this lab, you will write your first MCP server from scratch using Python's `FastMCP` framework. This will be a simple "Hello World" server with two tools that demonstrate how MCP tools are defined, registered, and invoked. By the end of this lab, you will have a working MCP server running on your VM and responding to requests.
+In this lab, you will write your first MCP server from scratch using Python's `FastMCP` framework. This will be a simple "Hello World" server with two tools that demonstrate how MCP tools are defined, registered, and invoked. You will then test it end-to-end through **Oracle Agent Factory**.
 
 Estimated Time: 15 minutes
-
-### About the MCP Protocol
-
-The **Model Context Protocol (MCP)** is an open standard that allows AI agents to discover and invoke external tools. An MCP server exposes a set of tools — each tool has a name, description, parameters, and a return type. When an AI client connects to your MCP server, it automatically discovers all available tools and can call them on behalf of the user.
-
-The `FastMCP` Python framework makes it trivially easy to define tools using simple decorators.
 
 ### Objectives
 
 In this lab, you will:
 
 * Write a minimal MCP server with `@mcp.tool()` decorators
-* Understand how tools are defined and discovered
-* Run and test the server locally
-* Test remote access from your local machine
+* Understand every section of the code in detail
+* Run the server on your VM
+* Test it through Oracle Agent Factory Playground
 
 ### Prerequisites
 
 This lab assumes you have:
 
-* SSH access to your Compute Instance (from Lab 2)
-* Python virtual environment activated with `fastmcp` installed (from Lab 2)
+* Completed Lab 1 (MCP development environment set up)
+* Oracle Agent Factory instance running
+* Successful completion of the environment verification script
+
+> **Don't want to type the code?** Download the ready-to-run [hello_mcp.py](files/hello_mcp.py?download=1) file, or download the [cumulative setup script](files/lab2_setup.sh?download=1) that does everything for you.
 
 ## Task 1: Write the Hello World MCP Server
 
@@ -35,19 +32,11 @@ This lab assumes you have:
     ```
     <copy>
     source ~/mcpenv/bin/activate
-    </copy>
-    ```
-
-2. Create a new directory for your MCP servers and navigate to it:
-
-    ```
-    <copy>
-    mkdir -p ~/mcp-servers
     cd ~/mcp-servers
     </copy>
     ```
 
-3. Create a new file called `hello_mcp.py`:
+2. Create a new file called `hello_mcp.py`:
 
     ```
     <copy>
@@ -108,11 +97,11 @@ import datetime
 mcp = FastMCP("HelloMCP")
 ```
 
-This creates a **named** MCP server instance. The name `"HelloMCP"` is what MCP clients will see when they connect. Think of it as the server's identity card.
+This creates a **named** MCP server instance. The name `"HelloMCP"` is what Oracle Agent Factory will display when you connect to it.
 
 | Parameter | Purpose |
 | --- | --- |
-| `"HelloMCP"` | The server name — clients display this to users. Use something descriptive like `"DatabaseAgent"` or `"K8sOperations"` |
+| `"HelloMCP"` | The server name — Agent Factory displays this to users. Use something descriptive like `"DatabaseAgent"` or `"K8sOperations"` |
 
 ### Section 3: Define Tools with `@mcp.tool()`
 
@@ -127,14 +116,14 @@ This is the **most important concept** — the `@mcp.tool()` decorator. Let's br
 
 | Element | What It Does | Why It Matters |
 | --- | --- | --- |
-| `@mcp.tool()` | Registers this function as an MCP tool | Without this decorator, the function is invisible to MCP clients |
-| `name: str` | Type-annotated parameter | MCP auto-generates the parameter schema from type hints. The client knows to send a string |
+| `@mcp.tool()` | Registers this function as an MCP tool | Without this decorator, the function is invisible to Agent Factory |
+| `name: str` | Type-annotated parameter | MCP auto-generates the parameter schema from type hints. Agent Factory knows to send a string |
 | `-> str` | Return type annotation | Tells the client what type of response to expect |
 | `"""docstring"""` | Tool description | **This is critical!** The AI agent reads this to decide WHEN to call this tool. Write clear, descriptive docstrings |
 
 > **⚠️ Important:** The **docstring** is what the AI agent uses to understand your tool. If your docstring says "Greet a user by name", the agent will call this tool when a user says "say hello to John". Write your docstrings like instructions for the AI.
 
-### Section 4: The Second Tool
+### Section 4: A No-Parameter Tool
 
 ```python
 @mcp.tool()
@@ -148,7 +137,7 @@ def server_info() -> str:
     )
 ```
 
-Notice that this tool takes **no parameters** — that's perfectly valid. Not every tool needs input. The agent will call this when a user asks "What server is this?" or "Is the server running?".
+This tool takes **no parameters** — that's perfectly valid. Not every tool needs input. The agent will call this when a user asks "What server is this?" or "Is the server running?".
 
 ### Section 5: Start the Server
 
@@ -163,7 +152,7 @@ if __name__ == "__main__":
 | `host` | `"0.0.0.0"` | Listen on ALL network interfaces (not just localhost). Required for remote access |
 | `port` | `8004` | The port number. Each MCP server needs its own port |
 
-> **Common Mistake:** If you use `host="localhost"` or `host="127.0.0.1"`, the server will only accept connections from the VM itself — not from remote clients. Always use `"0.0.0.0"` for production servers.
+> **Common Mistake:** If you use `host="localhost"` or `host="127.0.0.1"`, the server will only accept connections from the VM itself — not from Oracle Agent Factory. Always use `"0.0.0.0"` for production servers.
 
 ### Quick Reference: MCP Server Template
 
@@ -204,43 +193,58 @@ That's it! 4 steps. Everything else is just your business logic inside the tool 
 
     > **Note:** The server will run in the foreground. Keep this terminal open and open a **second SSH session** for testing.
 
-## Task 4: Test the Server Locally
+## Task 4: Test in Oracle Agent Factory
 
-1. In a **second SSH session** to your VM, test the server using `curl`:
+Now let's connect your MCP server to Oracle Agent Factory and test it through the Playground.
 
-    ```
-    <copy>
-    curl -s http://localhost:8004/mcp | python3 -m json.tool
-    </copy>
-    ```
+1. Log in to your **Oracle Agent Factory** instance.
 
-    You should see a JSON response listing the available tools (`greet` and `server_info`).
+    ![Agent Factory Home](images/agent-factory-home.png =50%x*)
 
-    ![Tool Discovery Response](images/curl-test-tools.png =50%x*)
+2. Click **Create Flow** to create a new agent flow.
 
-2. You can also test invoking a tool directly. The exact method depends on the MCP transport, but you can verify the server is alive with:
+    ![Create Flow](images/create-flow.png =50%x*)
+
+3. In the flow canvas, add an **MCP Server** node. Configure it with your server URL:
 
     ```
     <copy>
-    curl -s http://localhost:8004/mcp
+    http://<your-vm-public-ip>:8004/mcp
     </copy>
     ```
 
-## Task 5: Test Remote Access
+    > **Note:** Replace `<your-vm-public-ip>` with the actual public IP of your OCI Compute Instance.
 
-1. From your **local machine** (laptop/desktop), test that the server is accessible remotely using your VM's public IP:
+    ![Agent Factory Flow](images/agent-factory-add-mcp-url.png =50%x*)
+
+4. Once connected, Agent Factory will automatically discover the tools exposed by your MCP server. You should see:
+
+    - `greet` — Greet a user by name
+    - `server_info` — Get server host information
+
+5. Add a **Chat** node to the flow and connect it to the MCP Server node.
+
+6. Open the **Playground** and test with these queries:
 
     ```
     <copy>
-    curl -s http://<your-public-ip>:8004/mcp
+    Say hello to Lavkesh
     </copy>
     ```
 
-    > **Note:** If this doesn't work, verify your OCI Security List ingress rules (Lab 1, Task 2) and OS firewall (Lab 2, Task 4) are correctly configured.
+    ```
+    <copy>
+    What server is this running on?
+    </copy>
+    ```
 
-2. Once you confirm remote access works, stop the server in the first terminal with **Ctrl+C**.
+    The agent will call the appropriate MCP tools and return the results.
 
-Congratulations! You have built and tested your first MCP server. In the next lab, you will build a more powerful server that connects to an Oracle Database.
+    ![Agent Factory Chat Test](images/agent-factory-chat-with-mcp.png =50%x*)
+
+7. Once you confirm it works, stop the server with **Ctrl+C** in the SSH terminal.
+
+Congratulations! You have built and tested your first MCP server through Oracle Agent Factory. In the next lab, you will build a more powerful server that connects to an Oracle Database.
 
 You may now **proceed to the next lab**.
 
@@ -252,4 +256,4 @@ You may now **proceed to the next lab**.
 ## Acknowledgements
 
 * **Author** - Lavkesh Singh, Oracle
-* **Last Updated By/Date** - Lavkesh Singh, February 2025
+* **Last Updated By/Date** - Lavkesh Singh, March 2026

@@ -1,46 +1,41 @@
 {
-    "workshoptitle": "Build & Deploy Custom MCP Servers on OCI",
+    "workshoptitle": "Build Custom MCP Servers for Oracle Agent Factory",
     "help": "livelabs-help-db_us@oracle.com",
     "tutorials": [
         {
             "title": "Introduction",
-            "description": "Learn what MCP servers are and what you will build in this workshop",
+            "description": "Learn what MCP servers are and how they integrate with Oracle Agent Factory",
             "filename": "../../introduction/introduction.md"
         },
         {
-            "title": "Lab 1: Provision an OCI Compute Instance",
-            "description": "Create a VM and configure networking for MCP server hosting",
-            "filename": "../../provision-compute/provision-compute.md"
-        },
-        {
-            "title": "Lab 2: Set Up the Development Environment",
-            "description": "Install Python, create a virtual environment, and install FastMCP",
+            "title": "Lab 1: Set Up Your MCP Development Environment",
+            "description": "Install Python, FastMCP, and configure your VM for MCP development",
             "filename": "../../setup-environment/setup-environment.md"
         },
         {
-            "title": "Lab 3: Build Your First MCP Server",
-            "description": "Write a Hello World MCP server with two tools using FastMCP",
+            "title": "Lab 2: Build & Test Your First MCP Server",
+            "description": "Write a Hello World MCP server and test it through Oracle Agent Factory",
             "filename": "../../build-hello-mcp/build-hello-mcp.md"
         },
         {
-            "title": "Lab 4: Build a Database MCP Server",
-            "description": "Create a production-grade MCP server with Oracle DB tools",
+            "title": "Lab 3: Build a Database MCP Server",
+            "description": "Build an Oracle Database MCP server with 4 SQL tools",
             "filename": "../../build-db-mcp/build-db-mcp.md"
         },
         {
-            "title": "Lab 5: Deploy as a Persistent Service",
-            "description": "Run your MCP server as a systemd service with auto-restart",
+            "title": "Lab 4: Deploy as a Persistent Service",
+            "description": "Deploy your MCP server as a systemd service that auto-starts on boot",
             "filename": "../../deploy-service/deploy-service.md"
         },
         {
-            "title": "Lab 6: Connect to Agent Factory & MCP Clients",
-            "description": "Register your MCP server with Agent Factory, Cline, or Claude Desktop",
-            "filename": "../../connect-agent-factory/connect-agent-factory.md"
+            "title": "(Optional) Containerize Your MCP Server with Docker",
+            "description": "Alternative deployment using Docker containers with volume-mounted code",
+            "filename": "../../docker-setup/docker-setup.md"
         },
         {
             "title": "Need Help?",
-            "description": "Solutions to Common Problems and Directions for Receiving Live Help",
-            "filename": "https://raw.githubusercontent.com/oracle-livelabs/common/main/labs/need-help/need-help-freetier.md"
+            "description": "Solutions to common problems and known issues",
+            "filename": "https://raw.githubusercontent.com/oracle-livelabs/common/main/support/support.md"
         }
     ]
 }
