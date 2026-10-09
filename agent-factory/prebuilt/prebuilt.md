@@ -125,7 +125,7 @@ You created a Data Analysis Agent over a sample table and a Knowledge Agent over
 
 **Authors**
 
-* Emilio Perez, Member of Technical Staff, Database Applied AI
+* Database Applied AI Technical Staff
 * Allen Hosler, Principal Product Manager, Database Applied AI
 * Kumar G. Varun, Lead PM, Oracle Database Applied AI
 

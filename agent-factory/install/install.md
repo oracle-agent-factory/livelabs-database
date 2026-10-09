@@ -23,7 +23,7 @@ This task uses a Resource Manager stack published in the OCI Marketplace.
 ### 1. Open the Marketplace Listing
 
 * Navigate to the **Oracle AI Database – Private Agent Factory** listing:
-  [https://cloudmarketplace.oracle.com/marketplace/en_US/listing/201588705](https://cloudmarketplace.oracle.com/marketplace/en_US/listing/201588705)
+  [https://marketplace.oracle.com/app/agentfactory](https://marketplace.oracle.com/app/agentfactory)
 
    ![Agent Factory Application in Marketplace](images/marketplace-listing.png "Agent Factory Application in Marketplace")
 
@@ -79,7 +79,7 @@ Once the job completes successfully:
 
    ```
    <copy>
-   https://{instance_public_ip}:8080/studio/installation
+   https://{instance_public_ip}:8080/agentFactory/installation
    </copy>
    ```
 
@@ -152,7 +152,7 @@ You may now **proceed to the next lab**
 
 **Authors** 
 
-* Emilio Perez, Member of Technical Staff, Database Applied AI
+* Database Applied AI Technical Staff
 * Allen Hosler, Principal Product Manager, Database Applied AI
 * Kumar Varun, Senior Principal Product Manager, Database Applied AI
 
