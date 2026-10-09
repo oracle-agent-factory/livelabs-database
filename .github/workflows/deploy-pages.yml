@@ -1,10 +1,11 @@
-name: Publish Agent Factory workshops
+name: Publish LiveLabs workshops
 
 on:
   push:
     branches: [main]
     paths:
       - agent-factory/**
+      - appgen/**
       - .github/workflows/deploy-pages.yml
   workflow_dispatch:
 
@@ -33,9 +34,7 @@ jobs:
       - name: Stage workshops
         run: |
           mkdir -p _site
-          cp -R agent-factory _site/
-          test -f _site/agent-factory/workshops/aiw2026/index.html
-          test -f _site/agent-factory/workshops/aiw26-bootcamp/index.html
+          cp -R agent-factory appgen _site/
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
