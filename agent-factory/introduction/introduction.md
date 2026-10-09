@@ -3,7 +3,7 @@
 ## Introduction
 Welcome to this 4-part workshop series. This workshop will guide you through the **Oracle AI Database Private Agent Factory (Agent Factory)**, and demonstrate how enterprise is rapidly building and deploying Generative AI Agents privately and securely.
 
-**Estimated time:** 5 minutes.
+**Estimated Workshop Time:** 60 minutes.
 
 ### Objectives
 
@@ -52,8 +52,8 @@ You may now **proceed to the next lab**
 
 **Authors** 
 
-* Emilio Perez, Member of Technical Staff, Database Applied AI
+* Database Applied AI Technical Staff
 * Allen Hosler, Principal Product Manager, Database Applied AI
 * Kumar Varun, Senior Principal Product Manager, Database Applied AI
 
-**Last Updated Date** - February, 2026
+**Last Updated Date** - April, 2026
