@@ -21,8 +21,8 @@
       "filename": "../../custom-templates/custom-templates.md"
     },
     {
-      "title": "Lab 4: Database Diagnostics Agent",
-      "description": "Use the skeleton for a future expert-approved database diagnostics exercise.",
+      "title": "Lab 4: Custom Agent with Exadata Database Service MCP Server",
+      "description": "Build and test a custom AI agent that queries sample retail data through the preconfigured Exadata Database Service MCP Server.",
       "type": "livelabs",
       "filename": "../../database-diagnostics-agent/database-diagnostics-agent.md"
     },
