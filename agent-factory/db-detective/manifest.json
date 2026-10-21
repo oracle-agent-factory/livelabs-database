@@ -1,0 +1,10 @@
+{
+  "workshoptitle": "DBA Incident Detective",
+  "tutorials": [
+    {
+      "title": "DBA Incident Detective",
+      "type": "livelabs",
+      "filename": "db-detective.md"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "workshoptitle": "Linux Monitoring",
+  "tutorials": [
+    {
+      "title": "Linux Monitoring",
+      "type": "livelabs",
+      "filename": "linux-mon.md"
+    }
+  ]
+}

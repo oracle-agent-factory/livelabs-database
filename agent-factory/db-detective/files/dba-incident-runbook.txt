@@ -1,0 +1,24 @@
+DBA Incident Detective: Blocking Investigation Runbook
+Version 1.0 | 21 October 2026 | Training procedure
+
+RB-01: Establish scope and freshness
+First establish the database or PDB, the affected work, the incident observation time and whether the evidence is live or captured. A CAPTURED LAB INCIDENT describes a past exercise. It cannot establish that an incident is happening now. The lab database exposes one case through HOL_DB_DETECTIVE.INCIDENT_OVERVIEW and HOL_DB_DETECTIVE.INCIDENT_SESSIONS. The case contains only tagged training sessions. It does not measure application-wide availability, CPU, I/O, capacity or historical performance trends. If the user asks about present health, explain this evidence gap.
+
+RB-02: Identify the observed blocking chain
+Read the session evidence for the chosen case. Count sessions whose WAIT_STATE is WAITING and whose BLOCKING_STATUS is VALID. Correlate BLOCKING_INSTANCE and BLOCKING_SESSION with INSTANCE_ID and SESSION_ID in the same capture. Retain SERIAL_NUMBER as part of the observed session identity. Follow valid final-blocker identifiers when available. Distinguish a direct blocker from an ultimate blocker. Do not interpret a null identifier or UNKNOWN status as proof that no blocker exists. An EVENT value can describe a previous wait; interpret it together with WAIT_STATE. Label wait durations with their units and capture time.
+
+RB-03: An inactive session can hold a transaction
+A session can be INACTIVE while retaining an uncommitted transaction and locks. In the training case, a batch loader updates one lab row without committing and then becomes idle. Two requests try to update that same row and wait. The explanation is supported only when the captured wait relationships and open-transaction evidence agree. Low CPU is not needed to demonstrate blocking, and this case contains no CPU measurement. Do not infer a missing index, hardware problem or general database outage from these records.
+
+RB-04: Check before intervention
+Before suggesting any corrective action, confirm that current evidence still shows the same session, instance and serial number; identify the transaction's application owner; determine what work is uncommitted, its business purpose, and the impact of rollback or interruption. Contact that owner and the on-call DBA. Discuss whether the owning application can complete or roll back its transaction. An unrelated session cannot commit someone else's transaction. Session termination is an authorized DBA decision after impact review; this agent cannot terminate sessions, restart services, commit transactions, change parameters or run DDL/DML. For the training capture, the instructor already released the blocker and rolled back all lab work. There is no remaining incident to fix.
+
+RB-05: Escalate and verify
+Escalate with the symptom, case, database scope, capture time, blocker identity, affected session count, observed wait and remaining evidence gaps. After an authorized live intervention, collect new evidence and confirm the waiting work resumes and the application succeeds. Do not claim resolution from an old capture, an agent recommendation or absence of an error message. A later healthy snapshot does not establish why an earlier incident happened.
+
+RB-06: Handover format
+Use five short bullets: assessment; observed blocker and affected work; evidence time and scope; recommended next check with its runbook section; limitations. Cite the runbook title and RB section. Keep observed facts separate from recommendations. If the requested diagnosis is outside the available evidence, say what additional source would be needed. The runbook contains no tuning thresholds, patch procedures or automatic remediation authorization.
+
+Technical reference
+Oracle AI Database Reference, V$SESSION: https://docs.oracle.com/en/database/oracle/oracle-database/26/refrn/V-SESSION.html
+This original training runbook paraphrases the documented session-field semantics. It is not an Oracle Support diagnostic or a production change procedure.
