@@ -16,7 +16,8 @@ In this lab, you will:
 - Compare Knowledge, Data Analysis, and Deep Data Research agents.
 - Explore the Template Gallery, My Custom Flows, and the visual Agent Builder.
 - Locate utilities for prompts, datasets, data enrichment, and external tools and agents.
-- Identify the pages for data sources, models, and access management.
+- Identify the data sources and models available to your workshop account.
+- Find the additional agents provided for open-ended exploration.
 
 ### Prerequisites
 
@@ -24,7 +25,7 @@ In this lab, you will:
 - The application URL and sign-in details supplied by your instructor.
 - A learner account with permission to view the workshop features.
 
-> **Note:** Menu visibility and available resources depend on your account's permissions. If a page is unavailable, review its description and screenshot with your instructor. This tour uses page navigation and inspection; agent creation begins in Lab 2.
+> **Note:** Use your assigned workshop **Editor** account. The screenshots show `editor@oracleagentfactory.com`, a sample learner account; your sign-in name will differ. Editors can build and test agents using the supplied resources. Administrator pages such as User Management, Resource Management, and Application Settings are not part of this tour. This tour uses page navigation and inspection; agent creation begins in Lab 2.
 
 ## Task 1: Explore Getting Started
 
@@ -42,7 +43,7 @@ In this lab, you will:
     | Template Gallery | A reusable workflow | Adapt an existing pattern to your use case. |
     | Agent Builder | A visual canvas and reusable components | Design the steps, tools, and logic of your own workflow. |
 
-4. Locate the four navigation groups: **AGENT_FACTORY**, **PRE-BUILT AGENTS**, **UTILITIES**, and **SETTINGS**. The first two groups help you find agents and flows. Utilities support building and testing. Settings contain shared data, models, and administration features.
+4. Locate the four navigation groups: **AGENT_FACTORY**, **PRE-BUILT AGENTS**, **UTILITIES**, and **SETTINGS**. The first two groups help you find agents and flows. Utilities support building and testing. Your Editor account's Settings group contains **Select AI Framework**, **Data Sources**, and **Model Management**.
 
 5. Consider a document assistant: its data source supplies the reference material, a model interprets the question, and the agent retrieves relevant content to produce an answer. A custom workflow can add tools and routing when the task requires more steps.
 
@@ -64,7 +65,7 @@ In this lab, you will:
     | How many titles were released each year in this dataset? | Data Analysis Agent |
     | What findings in this collection of research files address my question? | Deep Data Research Agent |
 
-    An empty agent list is expected in a new learner account. You will create the Knowledge and Data Analysis agents in the next lab.
+    Some agents may already be provided, including **Oracle EBS Payables Analysis** under Data Analysis Agents. You will create your own Knowledge and Data Analysis agents in the next lab. Existing agents are additional examples, not prerequisites for completing the lab.
 
 ## Task 3: Explore templates and saved flows
 
@@ -76,11 +77,15 @@ In this lab, you will:
 
 3. Review another template and identify its business task. Notice that **Import flow** is the entry point for adapting a template in Agent Builder.
 
-4. Select **My Custom Flows**. This page lists flows you own and flows shared with you. Locate **Create flow**, **Agent Spec**, and **Import/Export**. These controls provide entry points for new flows and workflow exchange. Your list may be empty before you complete Lab 3.
+4. Select **My Custom Flows**. This page lists flows you own and flows shared with you. Locate **Create flow**, **Agent Spec**, and **Import/Export**. These controls provide entry points for new flows and workflow exchange. Your workshop account already contains additional example agents. You can explore them at any time; the optional activity below explains how.
+
+    Scroll within the list to explore more examples.
+
+    ![My Custom Flows in the sample Editor account, scrolled to additional example agents with Clone, Edit, and Run flow controls.](images/preloaded-flows.jpg)
 
 ## Task 4: Tour the visual Agent Builder
 
-1. Select **Agent Builder** under **UTILITIES**. Locate the **Components** panel and the canvas. If the panel is collapsed, select **Components** to open it.
+1. Select **Agent Builder** under **UTILITIES**. Locate the **Components** panel and the canvas. If an existing saved flow opens, click **New Flow** to start an empty canvas for this tour. If the panel is collapsed, select **Components** to open it. Allow the component list to finish loading before using its search field.
 
     ![Agent Builder with the Components panel, empty canvas, and workflow controls.](images/agent-builder.jpg)
 
@@ -120,24 +125,60 @@ In this lab, you will:
 
 Review these pages as a product tour. Use the workshop's supplied resources in the later labs.
 
-1. Select **Data Sources** under **SETTINGS**. Review the source tabs, including **Database**, **Web source**, **Rest APIs**, and **File sources**. Additional tabs provide connectors for SharePoint, Google Drive, and object storage. The **Database** tab in the example contains **Applied AI Datasets**, the sample database used by Lab 2.
+1. Select **Data Sources** under **SETTINGS**. Review the source tabs, including **Database**, **Web source**, **Rest APIs**, and **File sources**. Additional tabs provide connectors for SharePoint, Google Drive, and object storage. Keep the search field empty for this overview. The **Database** tab lists the supplied EBS, JD Edwards, PeopleSoft, and sample-data connections. Scroll inside the source list to see the remaining rows.
 
-    ![Data Sources page with source-type tabs and the Applied AI Datasets database connection.](images/data-sources.jpg)
+    ![Unfiltered Editor Data Sources Database tab showing the supplied EBS, JD Edwards, and PeopleSoft connections.](images/data-sources.jpg)
 
-2. Select **Model Management**. Review the **Generative models** and **Embedding models** tabs. Generative models produce responses; embedding models represent content as vectors for retrieval. Model names and providers may differ in your workshop environment.
+    To locate the sample-data connections, enter `Applied AI` in **Search for any database source...**. This filters the list to **Applied AI Datasets** and **Applied AI Enrichment Lab**. Clear the search to return to the full list shown above. Lab 2 identifies the source and Movies table to select. A **connected** label alone does not verify that the creation wizard can list or query an object.
+
+2. Select **Model Management**. Review the **Generative models** and **Embedding models** tabs. Generative models produce responses; embedding models represent content as vectors for retrieval. The shared default generative model in this instance is **AIW26-PAF-HOL6004-BOO6096**. **Backup-AIW2026-PAF-HOL6004-BOO6096** is also supplied. Use the default model in the exercises unless your instructor directs you to use the backup.
 
     ![Model Management page with generative and embedding model tabs and an existing model entry.](images/model-management.jpg)
 
-3. Locate the remaining settings pages and review their roles. Open pages that your learner account can view.
-
-    | Page | Purpose |
-    | --- | --- |
-    | Application Settings | Application-wide preferences and controls. |
-    | User Management | Administration of users, groups, and roles. |
-    | Resource Management | Access levels for individual resources and shared resources. |
-    | Select AI Framework | Management of Select AI components for a selected database. |
+3. Locate **Select AI Framework**, which manages Select AI components for a selected database. The workshop administrator has prepared shared connections and models. Use those existing resources for the exercises.
 
 4. Return to **Getting Started**. Locate **View documentation** in the **Quick start** panel for the product guide.
+
+## Task 7: Explore the additional workshop agents (optional)
+
+These examples are outside the required HOL exercises. You are welcome to run them, inspect their design, clone them, change their prompts and connections, and build your own variations. You do not need to complete them in order, and you can return to them after Labs 2 and 3.
+
+For guided practice after Lab 3, choose an optional activity from the workshop menu when your instructor has prepared its resources:
+
+| Optional activity | Additional time | What you will build |
+| --- | --- | --- |
+| Optional Lab 5: Linux Monitoring | 15 minutes | A server-health assistant using six MCP tools and a short shift handover. |
+| Optional Lab 6: DBA Incident Detective | 20 minutes | An investigation assistant combining captured blocking-session evidence with a runbook Knowledge Agent. |
+
+Choose either activity if time permits. Each works independently of Lab 4 and the other optional activity. The DBA exercise also uses the Knowledge Agent concepts from Lab 2 and requires a database registration for your own account.
+
+1. Open **My Custom Flows**. The sample account includes the following examples; the exact list can vary by assigned account.
+
+    | Agent | What to explore |
+    | --- | --- |
+    | Executive Working Capital Brief | Combine receivables and payables specialists into a leadership brief. |
+    | Supplier Follow-up Desk | Prepare a supplier follow-up list from open purchase lines. |
+    | Invoice Duplicate Review | Explain repeated supplier invoice references. |
+    | Workforce Planning Brief | Summarize department staffing and FTE. |
+    | Sales Commitment Review | Review unshipped sales-order lines and draft a customer update. |
+    | IT Operations Triage | Route outage and batch-performance questions to focused assistants. |
+    | Field Material Readiness | Compare a fictional dispatch plan with work-order material requirements. |
+    | Learning Evidence Review | Review recorded training completion and enrollment evidence. |
+    | Business Policy Desk | Answer questions from the supplied handbook with section citations. |
+    | Service Case Workload | Summarize CRM case workload by business unit, status, and priority. |
+    | Linux OS Monitoring | Inspect CPU, memory, filesystems, and services through MCP tools. |
+    | Contract Renewal with Document Evidence | Explore document evidence and a staged contract-renewal workflow. |
+    | Invoice Review and Actions | Explore invoice review and the configured invoice-action tools. |
+
+    There are also **AI World 2026 Session Guide** and **AI World 2026 Attendee Guide** examples under **Knowledge Agents**, and **Oracle EBS Payables Analysis** under **Data Analysis Agents**. Open those with **Open agent**. The same habit applies: read the description, ask a focused question, and inspect the evidence behind the answer.
+
+2. Read an agent's description, then click **Run flow**. Some supplied flows are **Draft**; you can test them in the application before publishing. Try `What can you help me with, and what inputs do you need?`, then ask a focused question supported by its data. Review returned records, citations, tool results, and any stated limits.
+
+3. Click **Clone** to make a working copy. The new name ends in **- Copy**. Click **Edit** on that copy, then use the pencil beside its flow name to give it a unique name. Inspect the prompt, selected model, database or file sources, and tool connections. Lab 3 explains how to change a prompt, save, and test it in **Playground**.
+
+4. Change one part of your copy, save it, start a **New chat**, and repeat the same question. Compare the answer with your baseline and the underlying evidence. Try a missing input, a follow-up question, and a question outside the source's scope. Publish your copy when you are satisfied with the result.
+
+5. You can experiment freely with your own flows and the supplied demo data. For the contract-renewal and invoice-action examples, begin with review questions and inspect the tools before testing actions: those flows can send a demo email or change connected demo records. Use the intended demo target and the confirmation steps shown by the agent. A preloaded flow or a successful import does not guarantee that every external service is available.
 
 ## Summary
 
@@ -159,4 +200,4 @@ You may now **proceed to Lab 2: Create Knowledge Agent (KA) and Data Analysis (D
 ## Acknowledgements
 
 - **Author** - Kumar G. Varun, Lead PM, Oracle Database Applied AI
-- **Last Updated By/Date** - Kumar G. Varun, October 7, 2026
+- **Last Updated By/Date** - Kumar G. Varun, October 21, 2026
