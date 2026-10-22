@@ -1,0 +1,12 @@
+{
+  "workshoptitle": "Linux Monitoring",
+  "tutorials": [
+    {
+      "title": "Linux Monitoring",
+      "type": "livelabs",
+      "filename": "../../linux-mon/linux-mon.md",
+      "description": "Use six read-only MCP tools to check a Linux server and its applications, then create a shift handover."
+    }
+  ],
+  "help": "livelabs-help-db_us@oracle.com"
+}

@@ -20,13 +20,13 @@ By the end of this lab, you will be able to:
 
 - Access to the workshop Private Agent Factory instance using the credentials provided by your instructor.
 - Permission to create, edit, and publish your own custom flows.
-- An instructor-provided language model and working Alpha Vantage and CoinGecko MCP connections. The workshop administrator prepares network access and any required tool credentials.
+- The shared **AIW26-PAF-HOL6004-BOO6096** language model and the template's Alpha Vantage and CoinGecko MCP connections. The workshop administrator prepares network access and any required tool credentials.
 
 ## Task 1: Import and name the template
 
 1. In the left navigation menu, open **Template Gallery**. Enter `Market sync` in **Search templates...**.
 
-    ![Template Gallery filtered to the Market sync agent template](images/template-ms.png)
+    ![Editor Template Gallery filtered to the Market sync agent template](images/template-ms.jpg)
 
 2. On the **Market sync agent** card, click **Import flow**. Agent Builder opens with a copy of the template.
 
@@ -36,7 +36,9 @@ By the end of this lab, you will be able to:
 
 1. Collapse the application sidebar and the **Components** sidebar to make room for the canvas. Click **fit view** in the canvas controls to see the flow.
 
-    ![Imported Market sync flow with chat nodes, prompt, agent, and two MCP servers](images/template-ms-imported.png)
+    ![Market sync flow in the Editor account with chat nodes, prompt, agent, and two MCP servers; the API-key field is redacted](images/template-ms-imported.jpg)
+
+    The example screenshot shows the renamed flow. Its Alpha Vantage URL field is deliberately redacted because the imported URL contains a key. Keep credentials out of your own screenshots and exported workshop files.
 
 2. Follow the connections from **Chat input** to **Prompt**, then to **Agent** and **Chat output**. The two **MCP server** nodes connect to the agent's **Tools** input.
 
@@ -50,9 +52,9 @@ By the end of this lab, you will be able to:
     | Chat output | Returns the agent's response to the chat. |
     | Sticky notes | Explain the template; they do not execute. |
 
-3. In the **Agent** node, check **Select LLM to use**. Select the model specified by your instructor. The imported template may select `xai.grok-4.3 (oci)`; available names and models depend on the instance.
+3. In the **Agent** node, check **Select LLM to use**. The HOL template selects **AIW26-PAF-HOL6004-BOO6096 (openai_compatible)**. Keep that shared model selected. **Backup-AIW2026-PAF-HOL6004-BOO6096** is available if your instructor directs you to use it; names can differ in another instance.
 
-4. Inspect the MCP server nodes and their notes. Keep the instructor-provided connections and credentials. If a model or tool connection is missing, ask the instructor to check the shared resource. Click **Save** in the toolbar if your changes enable it.
+4. Inspect the MCP server nodes and their notes. The template supplies URLs directly in the nodes; the **MCP server** list can remain unselected when an inline URL is configured. Alpha Vantage and CoinGecko do not have to appear on the **MCP Servers** settings page for these inline connections to be used. Keep the supplied connections and credentials. If a model or tool connection is missing, ask the instructor to check it. Click **Save** in the toolbar if your changes enable it.
 
 ## Task 3: Establish a baseline and customize the prompt
 
@@ -100,6 +102,8 @@ By the end of this lab, you will be able to:
     </copy>
     ```
 
+    ![Editor Playground returning the requested six columns for a BTC holding; quote values and timestamps vary.](images/template-ms-crypto.jpg)
+
 3. Review each answer against the returned tool data. Expand tool output or execution details when available; ask the instructor to show the execution trace if the chat does not expose it. An answer naming a tool is not proof that the tool ran successfully.
 
     - The stock lookup should use Alpha Vantage, and the cryptocurrency lookup should use CoinGecko.
@@ -108,6 +112,10 @@ By the end of this lab, you will be able to:
     - A failed lookup should show an unavailable price and holding value. If some lookups succeed, any total must be labeled partial.
 
 4. If a lookup fails or the service returns a rate limit, check the error with the instructor before retrying. Shared tool credentials can have request limits. Do not repeatedly submit the same question or treat an estimated answer as a successful lookup.
+
+    The shared Alpha Vantage service can return a standard quote, reject realtime access, or report a rate limit. The revised prompt must handle an unavailable quote without inventing a price. This screenshot shows that failure-handling case; it does not demonstrate a successful price lookup.
+
+    ![Stock lookup showing unavailable price and holding value and a partial total after a reported Alpha Vantage limit.](images/template-ms-stock-unavailable.jpg)
 
 5. If Playground stays at **Loading chat** or has no usable message input, reopen your flow from **My Custom Flows** using **Run flow** once. If the problem continues, ask the instructor to check the environment. Resume testing after it is resolved; publish only after both tool paths and the calculations are verified.
 
@@ -123,15 +131,21 @@ By the end of this lab, you will be able to:
 
 1. In the chat window, open **Integration options** and select **Endpoint URL**. Use its copy button to copy the endpoint for your own published flow.
 
-    ![Playground Integration options showing Endpoint URL and the API-key requirement](images/template-ms-integration.png)
+    ![Editor Integration options showing Endpoint URL and its API-key requirement](images/template-ms-integration.jpg)
 
 2. Review the text below the endpoint. External requests use `POST` and require an API key in the `Authorization: Bearer` header. Publication and authentication are both required for external execution.
 
-3. Only administrators can create and manage API keys. Administrators see the **API Key** and **Sample Code** tabs; workshop participants may not see those tabs. For an optional external test, use the key and request example provided by your instructor for your specific flow. Keep the key out of screenshots and workshop files.
+3. The sample Editor account shows **Endpoint URL**, **Agent ID for SDK**, and **A2A** tabs. API-key management is an administrator task; the Editor dialog does not show **API Key** or **Sample Code** tabs. For an optional external test, use the key and request example provided by your instructor for your specific flow. Keep the key out of screenshots and workshop files.
 
 4. If no key is provided, finish this task by identifying the endpoint and explaining the publication and authentication requirements. See [Agent Builder: Publish and Chat With Your Agents Outside the Application](https://docs.oracle.com/en/database/oracle/agent-factory/26.7/paias/agent-builder.html) for details.
 
     You may now **proceed to the next lab**.
+
+## Explore more agents (optional)
+
+Your account also includes additional examples under **My Custom Flows**, **Knowledge Agents**, and **Data Analysis Agents**. These are outside the required HOL exercises. See Lab 1's optional activity for the catalog and a workflow for running, cloning, modifying, and testing them. You can use what you learned here to change a prompt, choose another supplied model or data source, add components, and build your own agent. Start with a focused question, keep a baseline answer, and retest after each change.
+
+For a guided extension, choose **Optional Lab 5: Linux Monitoring** (15 minutes) or **Optional Lab 6: DBA Incident Detective** (20 minutes) from the workshop menu. Choose either when its required resources are available and time permits. These activities use the builder skills from this lab and can be completed independently of Lab 4.
 
 ## Acknowledgements
 
@@ -141,4 +155,4 @@ By the end of this lab, you will be able to:
 - Allen Hosler, Principal Product Manager, Database Applied AI
 - Kumar G. Varun, Lead PM, Oracle Database Applied AI
 
-**Last Updated Date** - October 2026
+**Last Updated Date** - October 21, 2026

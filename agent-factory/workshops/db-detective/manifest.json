@@ -1,0 +1,12 @@
+{
+  "workshoptitle": "DBA Incident Detective",
+  "tutorials": [
+    {
+      "title": "DBA Incident Detective",
+      "type": "livelabs",
+      "filename": "../../db-detective/db-detective.md",
+      "description": "Investigate captured blocking-session evidence with database tools and a cited operational runbook."
+    }
+  ],
+  "help": "livelabs-help-db_us@oracle.com"
+}
