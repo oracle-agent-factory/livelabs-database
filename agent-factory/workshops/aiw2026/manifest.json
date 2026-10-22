@@ -27,6 +27,18 @@
       "filename": "../../database-diagnostics-agent/database-diagnostics-agent.md"
     },
     {
+      "title": "Optional Lab 5: Linux Monitoring",
+      "description": "Optional 15-minute extension after Lab 3: check a Linux server and its applications with six read-only MCP tools and create a shift handover.",
+      "type": "livelabs",
+      "filename": "../../linux-mon/linux-mon.md"
+    },
+    {
+      "title": "Optional Lab 6: DBA Incident Detective",
+      "description": "Optional 20-minute extension after Lab 3: combine captured database incident evidence with a runbook and create an on-call handover.",
+      "type": "livelabs",
+      "filename": "../../db-detective/db-detective.md"
+    },
+    {
       "title": "Need Help?",
       "description": "Find solutions to common problems and ways to request help.",
       "filename": "https://raw.githubusercontent.com/oracle-livelabs/common/main/labs/need-help/need-help-freetier.md"

@@ -145,6 +145,8 @@ By the end of this lab, you will be able to:
 
 Your account also includes additional examples under **My Custom Flows**, **Knowledge Agents**, and **Data Analysis Agents**. These are outside the required HOL exercises. See Lab 1's optional activity for the catalog and a workflow for running, cloning, modifying, and testing them. You can use what you learned here to change a prompt, choose another supplied model or data source, add components, and build your own agent. Start with a focused question, keep a baseline answer, and retest after each change.
 
+For a guided extension, choose **Optional Lab 5: Linux Monitoring** (15 minutes) or **Optional Lab 6: DBA Incident Detective** (20 minutes) from the workshop menu. Choose either when its required resources are available and time permits. These activities use the builder skills from this lab and can be completed independently of Lab 4.
+
 ## Acknowledgements
 
 **Authors**

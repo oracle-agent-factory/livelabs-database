@@ -143,6 +143,15 @@ Review these pages as a product tour. Use the workshop's supplied resources in t
 
 These examples are outside the required HOL exercises. You are welcome to run them, inspect their design, clone them, change their prompts and connections, and build your own variations. You do not need to complete them in order, and you can return to them after Labs 2 and 3.
 
+For guided practice after Lab 3, choose an optional activity from the workshop menu when your instructor has prepared its resources:
+
+| Optional activity | Additional time | What you will build |
+| --- | --- | --- |
+| Optional Lab 5: Linux Monitoring | 15 minutes | A server-health assistant using six MCP tools and a short shift handover. |
+| Optional Lab 6: DBA Incident Detective | 20 minutes | An investigation assistant combining captured blocking-session evidence with a runbook Knowledge Agent. |
+
+Choose either activity if time permits. Each works independently of Lab 4 and the other optional activity. The DBA exercise also uses the Knowledge Agent concepts from Lab 2 and requires a database registration for your own account.
+
 1. Open **My Custom Flows**. The sample account includes the following examples; the exact list can vary by assigned account.
 
     | Agent | What to explore |
