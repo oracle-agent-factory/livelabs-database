@@ -2,13 +2,16 @@
 
 ## Introduction
 
-In this lab, you will use Oracle AI Database Private Agent Factory to create a custom AI agent connected to the MCP Server for Exadata Database Service. You’ll configure the agent to use the MCP server’s tools to interact with Exadata Database Service and respond to your questions.
+**Create a Custom AI Agent Using The Managed MCP Servers for Exadata Database Service** shows how to build a custom AI agent in Oracle AI Database Private Agent Factory that uses both data plane and control plane MCP servers.
 
 In this lab, you will explore **Oracle AI Database Private Agent Factory**, a no-code environment for building, deploying, and managing AI agents grounded in enterprise data.
 
-You will use **Agent Builder** to create a custom AI agent that connects to the managed MCP Server preconfigured for this workshop.
+Using Agent Builder, you will create a custom AI agent for Exadata Database Service that combines AI models, agent workflows, and two MCP servers:
 
-This lab demonstrates how Oracle AI Database Private Agent Factory can combine enterprise knowledge, AI models, agent workflows, and Model Context Protocol (MCP) tools while keeping enterprise data and database access governed.
+- **Data plane:** The Database Tools MCP Server gives the agent access to configured database tools, such as SQL queries and approved SQL Reports, to answer questions about database data.
+- **Control plane:** Managed MCP Servers for OCI Database Services give the agent access to supported OCI control-plane tools for Exadata infrastructure, VM clusters, databases, and related operational information.
+
+Together, these MCP tools let the agent use enterprise data and Exadata resource context to answer questions across both areas, including health-check questions about the database and its infrastructure. Access to data and database operations remains governed by the configured tools and permissions.
 
 **Estimated Time:** 10 minutes
 
@@ -16,9 +19,10 @@ This lab demonstrates how Oracle AI Database Private Agent Factory can combine e
 
 In this lab, you will:
 
-- Create a custom AI agent using Agent Builder.
-- Connect a custom agent to the managed MCP Server for Exadata Database Service.
-- Test grounded responses using natural language.
+- Create a custom AI agent using Agent Builder in Private Agent Factory.
+- Connect the agent to the Database Tools MCP Server to access configured database tools.
+- Connect the agent to the Managed MCP Server for OCI Database Services to access supported Exadata control-plane tools.
+- Test natural-language questions that combine database results with Exadata infrastructure and database information.
 
 ### Prerequisites
 
@@ -64,7 +68,7 @@ In this task, you will locate and review the MCP Server that has already been co
 
 2. Select **MCP Servers**.
 
-3. Locate the preconfigured MCP Server named: ***MCP Server for Exadata Database Service on Exascale Infrastructure***
+3. Locate the preconfigured MCP Server named: ***MCP Server for Exadata Database Service***
 
 4. Confirm that the MCP Server status is **Connected**.
 
@@ -100,7 +104,7 @@ In this task, you will locate and review the MCP Server that has already been co
     For example:
 
     ```text
-    <copy>Database MCP Agent</copy>
+    <copy>Retail Data Insights Agent</copy>
     ```
 
     Enter a description.
@@ -108,10 +112,9 @@ In this task, you will locate and review the MCP Server that has already been co
     For example:
 
     ```text
-    <copy>Custom AI agent that interacts with Oracle AI Database using MCP</copy>
+    <copy>An MCP-powered retail data agent connected to the Database Tools MCP Server. It uses configured Oracle Database tools and reports to answer natural-language questions about the retail dataset.</copy>
     ```
 
-    ![name flow](./images/name-flow-save.png)
 
 4. Click **Save changes** to create the flow.
 
@@ -121,24 +124,28 @@ In this task, you will locate and review the MCP Server that has already been co
 
 2. Under **Select LLM to use**, select the LLM provided for the workshop environment:
 
-    Select `llm_model_entry (oci)`, as shown in the screenshot, or the model specified by your instructor.
+    Select `AIW26-PAF-HOL6004..`, as shown in the screenshot, or the model specified by your instructor.
 
 3. In **Custom instructions**, enter the following:
 
     ```nohighlight
-    <copy>You are an enterprise database assistant.
+    <copy>You are the Retail Data Insights Agent, an enterprise assistant for the Northstar retail dataset in Oracle Database.
 
-    Use the connected MCP tools whenever information must be retrieved from Oracle AI Database.
+    Use the connected MCP tools whenever a question needs data, schema details or calculations. Prefer the built-in AGENT_* functions, called as SELECT AGENT_X(...) FROM dual, because they apply the business rules. Look up their parameters in USER_ARGUMENTS.
 
-    Base database-related answers on information returned by the MCP tools. Do not invent database records, values, or query results.
+    Base answers on tool results. Do not invent records, values, table or column names, or query results. If a query fails or results are incomplete, say so and ask one focused follow-up question.
 
-    Provide clear and concise responses using short bullet points. When appropriate, include the tool or database information used to support the answer.</copy>
+    The data is frozen at the latest inventory snapshot (2026-10-16 06:00). Treat that as "now" and say "as of the snapshot".
+
+    This environment is read-only. Never call AGENT_RECORD_RECOMMENDATION, AGENT_DRAFT_REPLENISHMENT_ORDER or AGENT_PLACE_PRODUCT_HOLD, because they write data even inside a SELECT. Never run INSERT, UPDATE, DELETE, DDL or COMMIT. Do not expose credentials or secrets.
+
+    Answer concisely with short bullets or a table. For policy answers, cite rules as [1], [2] and end with a Sources list giving the reference code, document name and section.</copy>
     ```
 
 4. In **Agent description**, enter the name of the agent:
 
     ```nohighlight
-    <copy>Exascale Data Assistant</copy>
+    <copy>Answers questions about North Superstore retail stores, products, inventory, sales, promotions, supplier orders and company policies, using read-only access to Oracle Database through MCP.</copy>
     ```
 
 5. Leave the **Prompt** field blank.
@@ -157,7 +164,7 @@ In this task, you will locate and review the MCP Server that has already been co
 
     ![mcp server tool](./images/mcp-server-tool.png)
 
-    In **Allowed tools**, select the tools approved by your instructor for schema and object discovery and read-only queries. Leaving this field empty enables all tools exposed by the server.
+    In **Allowed tools**, select the tools approved by your instructor for schema and object discovery and read-only queries. For this lab, choose ***schema\_information*** and ***sql\_run***
 
     > **Note:** Limiting an agent to the tools required for its intended task reduces unnecessary capabilities and helps maintain a governed agent workflow.
 
@@ -179,9 +186,9 @@ In this task, you will locate and review the MCP Server that has already been co
 
     ![save flow](./images/save-flow.png)
 
-## Task 5: Test the MCP Connection in Playground
+## Task 5: Ask the agent questions in Playground
 
-1. Open the completed workflow in **Playground**.
+1. Select **Playground** in the upper-right corner of the flow editor.
 
     ![open playground](./images/playground.png)
 
@@ -192,7 +199,7 @@ In this task, you will locate and review the MCP Server that has already been co
     For example:
 
     ```text
-    <copy>What database tools do you have available?</copy>
+    <copy>What tools do you have for my database, and what does each one do?</copy>
     ```
 
     Submit the prompt.
@@ -201,65 +208,72 @@ In this task, you will locate and review the MCP Server that has already been co
 
 3. Verify that the agent recognizes the tools exposed through the MCP Server.
 
+    ![database tools](./images/database-tools-second.png)
+
 4. Enter a natural-language question that requires information from the Oracle AI Database.
 
-    > **Note:** Use a question that corresponds to the sample database objects and data provided with the workshop. For this demonstration, we are using a sample retail sales dataset containing transaction, product, channel, regional, sales, margin, and return information.
+    > **Note:** Use a question that corresponds to the sample database objects and data provided with the workshop. For this demonstration, we are using a sample fictional retail store dataset containing transaction, product, channel, regional, sales, and return information.
 
     For example:
 
     **Establish the data scope**
 
     ```text
-    <copy>Give me an executive summary of the retail sales data for the full available period. Include the date range, total net sales, total orders, total refunds, and sales by channel.</copy>
+    <copy>What data is in this database? Which tables tell me about stores, products and stock?</copy>
     ```
 
-5. Submit the question.
+5. Submit the question and observe the agent execution. 
 
-6. Observe the agent execution.
-
-7. Verify that the agent invokes an appropriate MCP tool. Expand the tool output or execution details when available; ask your instructor to show the execution trace if needed. An answer naming a tool alone does not verify that the tool ran successfully.
+     ![database tools](./images/database-tables.png)
 
 8. Review the response returned by the agent.
 
     Ask more sample questions:
 
-    **Analyze regional performance**
+    **Discovery**
 
     ```text
-    <copy>For the full available period, show total net sales by region. Include order count and each region’s percentage of total net sales. Sort from highest to lowest.</copy>
+    <copy>What business tools are built into the database?</copy>
     ```
 
-    **Analyze sales trends**
+    ![database tools](./images/business-tools.png)
+
+    **Store location**
 
     ```text
-    <copy>Show monthly net sales trends for the full available period. Include net sales, order count, and month-over-month change. Identify the highest and lowest sales months.</copy>
+    <copy>Which stores are in the Chicago metro area.</copy>
     ```
 
-    **Compare sales channels**
+     ![database tools](./images/store-location-chicago.png)
+
+    **Inventory Analysis**
 
     ```text
-    <copy>Compare WEB, STORE, and MOBILE for the full available period using total net sales, order count, average order value, gross margin amount, and margin percentage. Sort by net sales.</copy>
+    <copy>Give me a list of stores and items at risk of stockout in the next 7 days</copy>
     ```
+    ![database tools](./images/stock-out.png)
 
-    **Analyze product profitability**
+    **Stockout Analysis**
 
     ```text
-    <copy>Using gross margin amount, defined as net sales minus cost, which five products generated the highest total gross margin? Include product name, category, net sales, cost, gross margin, and margin percentage.</copy>
+    <copy>Why is there a risk of stockout for Premium Coffee at store 1042?</copy>
     ```
+    ![database tools](./images/stock-out-analysis.png)
 
-    **Ask a cross-analysis question**
+    **Identify Recommendations to resolve stockout**
 
     ```text
-    <copy>Among the five highest-margin products, which channel and region generated the most net sales?</copy>
+    <copy>I want recommendations on how to resolve the stockout</copy>
     ```
+    ![database tools](./images/recommendations.png)
 
-    **Identify improvement opportunities**
 
     ```text
-    <copy>Which region has the highest return rate? Calculate return rate as returned transactions divided by total transactions, and include net sales and refund amount.</copy>
+    <copy>Which other Chicago stores could send Premium Coffee to store 1042, and how many units could each one spare?</copy>
     ```
+    ![database tools](./images/reco-second.png)
 
-9. Compare the answer with the returned tool data. Check the date range, totals, and calculations against the query results. If a tool fails or the sample data is unavailable, ask your instructor to check the shared connection before continuing.
+9. Compare the answer with the returned tool data. Check the date range, totals, and calculations against the query results. 
 
     Congratulations! You have now created a custom AI agent that can interact with Oracle AI Database through the managed MCP Server.
 
@@ -271,4 +285,4 @@ In this task, you will locate and review the MCP Server that has already been co
 
 * Leo Alvarado, Vishal Patil, Product Management, Oracle Database Cloud Services, Multicloud
 
-**Last Updated Date** - September, 2026
+**Last Updated Date** - October, 2026
