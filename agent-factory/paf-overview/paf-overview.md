@@ -53,7 +53,7 @@ In this lab, you will:
 
     A Knowledge Agent uses retrieval-augmented generation (RAG) to answer questions from selected knowledge sources. Its answers include citations so you can inspect the supporting content. In Lab 2, you will create one using a PDF.
 
-2. Select **Data Analysis Agents**. This is the starting point for agents that answer questions about database tables and views. In Lab 2, you will use a sample dataset and examine generated SQL, tables, and visualizations.
+2. Select **Data Analysis Agents**. This is the starting point for agents that answer questions about database tables and views. In Lab 2, you will use the Oracle EBS product inventory view and examine generated SQL, tables, and visualizations.
 
 3. Select **Deep Data Research Agents**. This agent type prepares a searchable knowledge base from file data sources and answers research questions with citations to retrieved documents.
 
@@ -111,7 +111,7 @@ In this lab, you will:
 
     ![Prompt Lab with model selection, temperature, prompt input, Generate button, and saved tests.](images/prompt-lab.jpg)
 
-2. Select **Datasets**. Review the sample dataset cards, filters, and **Import Dataset** buttons. Each card describes its content and format. You will work with sample data in Lab 2.
+2. Select **Datasets**. Review the sample dataset cards, filters, and **Import Dataset** buttons. Each card describes its content and format. Lab 2 uses an existing database view and does not require a dataset import.
 
     ![Datasets page with category, difficulty, and source filters and sample dataset cards.](images/datasets.jpg)
 
@@ -129,7 +129,7 @@ Review these pages as a product tour. Use the workshop's supplied resources in t
 
     ![Unfiltered Editor Data Sources Database tab showing the supplied EBS, JD Edwards, and PeopleSoft connections.](images/data-sources.jpg)
 
-    To locate the sample-data connections, enter `Applied AI` in **Search for any database source...**. This filters the list to **Applied AI Datasets** and **Applied AI Enrichment Lab**. Clear the search to return to the full list shown above. Lab 2 identifies the source and Movies table to select. A **connected** label alone does not verify that the creation wizard can list or query an object.
+    To locate the Lab 2 connection, enter `Oracle EBS Operations` in **Search for any database source...**. Lab 2 uses **Oracle EBS Operations Read Only** and its `APPS.XXAF_OPS_PRODUCTS_V` view. Clear the search to return to the full list shown above. A **connected** label alone does not verify that the creation wizard can list or query an object.
 
 2. Select **Model Management**. Review the **Generative models** and **Embedding models** tabs. Generative models produce responses; embedding models represent content as vectors for retrieval. The shared default generative model in this instance is **AIW26-PAF-HOL6004-BOO6096**. **Backup-AIW2026-PAF-HOL6004-BOO6096** is also supplied. Use the default model in the exercises unless your instructor directs you to use the backup.
 
